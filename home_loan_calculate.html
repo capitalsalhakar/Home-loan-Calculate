@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lowest Interest Home Loan - Poster & Calculators</title>
+    <!-- Tailwind CSS CDN for utility-first styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font: Inter for modern typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Base styles for the body, ensuring Inter font and a light cyan background */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #e0f7fa; /* Light cyan background */
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh; /* Ensure body takes full viewport height */
+        }
+
+        /* Poster Specific Styles - designed for visual impact */
+        .poster-container {
+            background: linear-gradient(135deg, #1e3a8a 0%, #06b6d4 100%); /* Deep Blue to Cyan gradient */
+            border-radius: 25px; /* Rounded corners for a softer look */
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.3); /* Strong shadow for depth */
+            color: white;
+            padding: 50px 30px; /* Generous padding inside the poster */
+            max-width: 650px; /* Max width for larger screens to control readability */
+            width: 100%; /* Full width on smaller screens for responsiveness */
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 25px; /* Space between content sections */
+            position: relative; /* Needed for pseudo-elements */
+            overflow: hidden; /* Hide overflowing blur effects */
+            margin-bottom: 40px; /* Space between poster and the React app below */
+        }
+        /* Pseudo-elements for subtle background blur effects */
+        .poster-container::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: -50px;
+            width: 150px;
+            height: 150px;
+            background: rgba(255, 255, 255, 0.1); /* Semi-transparent white */
+            border-radius: 50%; /* Circular shape */
+            filter: blur(40px); /* Heavy blur effect */
+        }
+        .poster-container::after {
+            content: '';
+            position: absolute;
+            bottom: -70px;
+            right: -70px;
+            width: 180px;
+            height: 180px;
+            background: rgba(255, 255, 255, 0.08); /* Slightly less transparent */
+            border-radius: 50%;
+            filter: blur(50px);
+        }
+        .poster-headline {
+            font-size: 3.5rem; /* Large, impactful headline */
+            font-weight: 800; /* Extra bold */
+            line-height: 1.1; /* Tighter line height for large text */
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4); /* Strong text shadow */
+            margin-bottom: 10px;
+        }
+        .poster-subheadline {
+            font-size: 2.0rem; /* Increased font size */
+            font-weight: 700; /* Made bolder */
+            margin-bottom: 25px;
+            opacity: 1; /* Ensure full opacity */
+            color: #fcd34d; /* Slightly different color for emphasis */
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+            animation: zoom-in-out 2s ease-in-out infinite; /* Apply zoom animation */
+        }
+        /* Keyframes for the zoom-in-out animation */
+        @keyframes zoom-in-out {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05); /* Zoom in slightly */
+            }
+            100% {
+                transform: scale(1); /* Zoom back out */
+            }
+        }
+        .interest-rate-highlight {
+            font-size: 2.5rem; /* Increased font size for more emphasis */
+            font-weight: 800; /* Extra bold for stronger effect */
+            color: #34d399; /* Vibrant green accent color */
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3); /* Enhanced text shadow */
+            margin-bottom: 25px;
+        }
+        .benefits-list {
+            list-style: none; /* Remove default list bullets */
+            padding: 0;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 15px; /* Space between list items */
+            text-align: left; /* Align text to the left within the list */
+            max-width: 400px; /* Control width for readability */
+            margin-left: auto;
+            margin-right: auto; /* Center the list */
+        }
+        .benefits-list li {
+            font-size: 1.2rem;
+            font-weight: 400;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0.9;
+        }
+        .benefits-list li svg {
+            color: #fbbf24; /* Bright yellow accent color for checkmarks */
+            min-width: 24px; /* Ensure icon size consistency */
+            min-height: 24px;
+        }
+        .poster-cta-button {
+            background-color: #fbbf24; /* Vibrant yellow call to action */
+            color: #333; /* Dark text for contrast on yellow */
+            padding: 18px 40px;
+            border-radius: 12px; /* Rounded button */
+            font-size: 1.6rem;
+            font-weight: 700;
+            text-decoration: none; /* Remove underline */
+            display: inline-block; /* Allows padding and margin */
+            margin-top: 35px;
+            transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Smooth transitions for hover effects */
+            box-shadow: 0 8px 15px rgba(251, 191, 36, 0.4); /* Initial shadow */
+        }
+        .poster-cta-button:hover {
+            transform: translateY(-5px) scale(1.02); /* Lift and slightly enlarge on hover */
+            background-color: #fcd34d; /* Lighter yellow on hover */
+            box-shadow: 0 12px 20px rgba(251, 191, 36, 0.6); /* Enhanced shadow on hover */
+        }
+        .contact-info {
+            font-size: 1rem;
+            opacity: 0.8;
+            margin-top: 25px;
+        }
+        .contact-info a {
+            color: #e0f7fa; /* Lighter text for links on dark background */
+            text-decoration: underline;
+            transition: color 0.2s ease-in-out;
+        }
+        .contact-info a:hover {
+            color: #ffffff;
+        }
+        .poster-disclaimer {
+            font-size: 0.85rem;
+            opacity: 0.7;
+            margin-top: 15px;
+        }
+
+        /* Partner Banks Section Styles - integrated into the poster */
+        .partner-banks-section {
+            background-color: rgba(255, 255, 255, 0.15); /* Slightly transparent white background */
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 25px;
+            width: calc(100% - 40px); /* Adjust width for padding */
+            max-width: 550px; /* Slightly smaller than main container */
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.1); /* Inner shadow for subtle depth */
+            align-self: center; /* Center within the flex container */
+        }
+        .partner-banks-section h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: #f0f8ff; /* Off-white for heading */
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2);
+        }
+        .bank-slideshow-container {
+            min-height: 90px; /* Increased height to accommodate larger logos */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden; /* Hide overflowing content during transition */
+        }
+        .bank-slideshow-item {
+            position: absolute; /* Absolute positioning for sliding effect */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex; /* Use flex to center image/text within the slide */
+            justify-content: center;
+            align-items: center;
+            transform: translateX(100%); /* Start off-screen to the right */
+            transition: transform 1s ease-in-out; /* Smooth slide transition */
+        }
+        .bank-slideshow-item.active {
+            transform: translateX(0%); /* Slide into view */
+        }
+        .bank-slideshow-item.leaving {
+            transform: translateX(-100%); /* Slide out to the left */
+        }
+        .bank-slideshow-logo {
+            max-width: 250px; /* Increased max width for logos */
+            max-height: 80px; /* Increased max height for logos */
+            object-fit: contain; /* Ensure logo fits without distortion */
+            filter: drop-shadow(0 0 5px rgba(0,0,0,0.3)); /* Subtle shadow for professionalism */
+        }
+        .bank-slideshow-fallback-text {
+            color: #f0f8ff; /* Off-white for fallback text */
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        /* React App Container Styles - styled to integrate with the overall page */
+        #react-app-root {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            max-width: 650px; /* Match poster width for visual consistency */
+            width: 100%;
+            transition: transform 0.3s ease-in-out; /* Smooth transition for hover effect */
+            margin-top: 20px; /* Space from poster */
+        }
+        #react-app-root:hover {
+            transform: scale(1.02); /* Slightly enlarge on hover */
+        }
+
+        /* Amortization Table Styles - for clear financial breakdown */
+        .amortization-table-container {
+            max-height: 400px; /* Limit height for scrollability */
+            overflow-y: auto; /* Enable vertical scrolling */
+            margin-top: 20px;
+            border-radius: 10px;
+            border: 1px solid #e2e8f0; /* Light border */
+        }
+        .amortization-table {
+            width: 100%;
+            border-collapse: collapse; /* Collapse borders for a clean look */
+            font-size: 0.9rem;
+            text-align: right; /* Align numbers to the right for readability */
+        }
+        .amortization-table th, .amortization-table td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e2e8f0; /* Separator for rows */
+        }
+        .amortization-table th {
+            background-color: #f8fafc; /* Light header background */
+            font-weight: 600;
+            color: #4a5568;
+            position: sticky; /* Make header sticky when scrolling */
+            top: 0; /* Stick to the top of the container */
+            z-index: 1; /* Ensure header is above scrolling content */
+        }
+        .amortization-table tbody tr:nth-child(even) {
+            background-color: #fbfdff; /* Slightly different background for even rows for readability */
+        }
+        .amortization-table tbody tr:hover {
+            background-color: #edf2f7; /* Highlight row on hover */
+        }
+        .amortization-table td:first-child, .amortization-table th:first-child {
+            text-align: center; /* Center payment number for consistency */
+        }
+
+        /* Responsive adjustments for Poster and App */
+        @media (max-width: 768px) {
+            .poster-headline {
+                font-size: 2.8rem;
+            }
+            .poster-subheadline {
+                font-size: 1.5rem;
+            }
+            .benefits-list li {
+                font-size: 1.1rem;
+            }
+            .poster-cta-button {
+                font-size: 1.4rem;
+                padding: 15px 30px;
+            }
+            .poster-container {
+                padding: 40px 25px;
+            }
+            #react-app-root {
+                padding: 30px;
+            }
+            .amortization-table th, .amortization-table td {
+                padding: 8px 10px;
+                font-size: 0.8rem;
+            }
+            .partner-banks-section h3 {
+                font-size: 1.3rem;
+            }
+            .bank-slideshow-logo {
+                max-width: 180px; /* Adjusted for smaller screens */
+                max-height: 60px; /* Adjusted for smaller screens */
+            }
+            .bank-slideshow-fallback-text {
+                font-size: 1.2rem;
+            }
+            .bank-slideshow-container {
+                min-height: 70px; /* Adjusted for smaller screens */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .poster-headline {
+                font-size: 2.2rem;
+            }
+            .poster-subheadline {
+                font-size: 1.2rem;
+            }
+            .benefits-list li {
+                font-size: 1rem;
+            }
+            .poster-cta-button {
+                font-size: 1.2rem;
+                padding: 12px 25px;
+            }
+            .poster-container {
+                padding: 30px 20px;
+            }
+            body {
+                padding: 10px;
+            }
+            #react-app-root {
+                padding: 20px;
+            }
+            .amortization-table th, .amortization-table td {
+                padding: 6px 8px;
+                font-size: 0.75rem;
+            }
+            .partner-banks-section h3 {
+                font-size: 1.1rem;
+            }
+            .bank-slideshow-logo {
+                max-width: 150px; /* Adjusted for smallest screens */
+                max-height: 50px; /* Adjusted for smallest screens */
+            }
+            .bank-slideshow-fallback-text {
+                font-size: 1rem;
+            }
+            .bank-slideshow-container {
+                min-height: 60px; /* Adjusted for smallest screens */
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Poster Section: Designed to attract attention with key information -->
+    <div class="poster-container">
+        <h1 class="poster-headline">
+            Unlock Your Dream Home & Save More!
+        </h1>
+        <p class="poster-subheadline">
+            Available Now
+        </p>
+
+        <!-- Static Interest Rate Highlight -->
+        <p class="interest-rate-highlight">
+            Interest rates starting from 7.35%*
+        </p>
+
+        <!-- Partner Banks Section with Slideshow to showcase affiliations -->
+        <div class="partner-banks-section">
+            <h3>Our Partner Banks</h3>
+            <div id="bankSlideshow" class="bank-slideshow-container">
+                <!-- Bank logos will be dynamically added here by JavaScript -->
+            </div>
+        </div>
+
+        <!-- Key Benefits List -->
+        <ul class="benefits-list">
+            <li>
+                <!-- Checkmark SVG icon for visual appeal -->
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                    <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd" />
+                </svg>
+                <span>Competitive Interest Rates</span>
+            </li>
+            <li>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                    <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd" />
+                </svg>
+                <span>Reduce Your Monthly Payments</span>
+            </li>
+            <li>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                    <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd" />
+                </svg>
+                <span>Simple & Fast Application Process</span>
+            </li>
+            <li>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6">
+                    <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clip-rule="evenodd" />
+                </svg>
+                <span>Expert Guidance Every Step of the Way</span>
+            </li>
+        </ul>
+
+        <!-- Call to Action Button -->
+        <a href="https://wa.me/917503782090" target="_blank" class="poster-cta-button">
+            Chat with Expert
+        </a>
+
+        <p class="contact-info">
+            Mail us: <a href="mailto:Info@capitalsalhakar.com" class="underline hover:text-blue-200">Info@capitalsalhakar.com</a> | Call us: <a href="tel:+917503782090" class="underline hover:text-blue-200">+91 75037 82090</a>
+        </p>
+        <p class="poster-disclaimer">
+            *Interest rates are subject to change and depend on individual eligibility and market conditions.
+        </p>
+    </div>
+
+    <!-- React Application Section: Home Loan Calculators -->
+    <div id="react-app-root" class="flex flex-col items-center justify-center p-4">
+        <!-- React app will be mounted here -->
+    </div>
+
+    <!-- React and ReactDOM CDNs for browser-based React development -->
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel for JSX transformation in browser (for development/demo purposes) -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- JavaScript for the React App and Partner Banks Slideshow -->
+    <script type="text/babel">
+        // Utility function to calculate monthly payment (EMI)
+        const calculateMonthlyPayment = (principal, annualRate, years) => {
+            if (principal <= 0 || annualRate < 0 || years <= 0) {
+                return 0;
+            }
+            const monthlyRate = (annualRate / 100) / 12;
+            const numberOfPayments = years * 12;
+
+            if (monthlyRate === 0) {
+                // Handle zero interest rate: simple division of principal over term
+                return principal / numberOfPayments;
+            }
+
+            const numerator = principal * monthlyRate * Math.pow((1 + monthlyRate), numberOfPayments);
+            const denominator = Math.pow((1 + monthlyRate), numberOfPayments) - 1;
+            return numerator / denominator;
+        };
+
+        // Utility function to generate amortization schedule
+        const generateAmortizationSchedule = (principal, annualRate, years, monthlyPayment) => {
+            let schedule = [];
+            let remainingBalance = principal;
+            const monthlyRate = (annualRate / 100) / 12;
+            const numberOfPayments = years * 12;
+
+            for (let i = 1; i <= numberOfPayments; i++) {
+                let interestPaid = remainingBalance * monthlyRate;
+                let principalPaid = monthlyPayment - interestPaid;
+
+                // Adjust last payment to ensure balance becomes exactly zero
+                if (i === numberOfPayments) {
+                    principalPaid = remainingBalance;
+                    interestPaid = monthlyPayment - principalPaid;
+                }
+
+                remainingBalance -= principalPaid;
+                // Ensure remaining balance doesn't go negative due to floating point inaccuracies
+                if (remainingBalance < 0) remainingBalance = 0;
+
+                schedule.push({
+                    paymentNo: i,
+                    monthlyPayment: monthlyPayment.toFixed(2),
+                    principalPaid: principalPaid.toFixed(2),
+                    interestPaid: interestPaid.toFixed(2),
+                    remainingBalance: remainingBalance.toFixed(2)
+                });
+            }
+            return schedule;
+        };
+
+        // Home Loan EMI Calculator Component
+        const HomeLoanEMICalculator = () => {
+            const [loanAmount, setLoanAmount] = React.useState('');
+            const [desiredRate, setDesiredRate] = React.useState('');
+            const [loanTerm, setLoanTerm] = React.useState('');
+            const [monthlyPayment, setMonthlyPayment] = React.useState(null);
+            const [amortizationSchedule, setAmortizationSchedule] = React.useState([]);
+            const [message, setMessage] = React.useState('');
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                setMessage('');
+                setMonthlyPayment(null);
+                setAmortizationSchedule([]);
+
+                const principal = parseFloat(loanAmount);
+                const annualRate = parseFloat(desiredRate);
+                const termYears = parseFloat(loanTerm);
+
+                // Input validation
+                if (isNaN(principal) || isNaN(annualRate) || isNaN(termYears) || principal <= 0 || annualRate < 0 || termYears <= 0) {
+                    setMessage('Please enter valid positive numbers for all fields.');
+                    return;
+                }
+
+                const calculatedMonthlyPayment = calculateMonthlyPayment(principal, annualRate, termYears);
+                setMonthlyPayment(calculatedMonthlyPayment.toFixed(2));
+
+                const schedule = generateAmortizationSchedule(principal, annualRate, termYears, calculatedMonthlyPayment);
+                setAmortizationSchedule(schedule);
+
+                setMessage('Your estimated monthly payment and amortization schedule are calculated.');
+            };
+
+            const handleReset = () => {
+                setLoanAmount('');
+                setDesiredRate('');
+                setLoanTerm('');
+                setMonthlyPayment(null);
+                setAmortizationSchedule([]);
+                setMessage('');
+            };
+
+            return (
+                <div className="w-full">
+                    <h1 className="text-4xl font-extrabold text-gray-800 mb-6 font-inter">
+                        Home Loan EMI Calculator
+                    </h1>
+                    <p className="text-gray-600 text-lg mb-8">
+                        Estimate your monthly payments for your dream home.
+                    </p>
+
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        <div>
+                            <label htmlFor="loanAmount" className="block text-left text-gray-700 text-sm font-medium mb-2">
+                                Loan Amount (₹)
+                            </label>
+                            <input
+                                type="number"
+                                id="loanAmount"
+                                value={loanAmount}
+                                onChange={(e) => setLoanAmount(e.target.value)}
+                                placeholder="e.g., 2500000"
+                                className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-600 focus:border-blue-600 transition duration-200"
+                                required
+                                min="0"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="desiredRate" className="block text-left text-gray-700 text-sm font-medium mb-2">
+                                Annual Interest Rate (%)
+                            </label>
+                            <input
+                                type="number"
+                                id="desiredRate"
+                                value={desiredRate}
+                                onChange={(e) => setDesiredRate(e.target.value)}
+                                placeholder="e.g., 8.5"
+                                step="0.01"
+                                className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-600 focus:border-blue-600 transition duration-200"
+                                required
+                                min="0"
+                            />
+                        </div>
+                        <div>
+                            <label htmlFor="loanTerm" className="block text-left text-gray-700 text-sm font-medium mb-2">
+                                Loan Term (Years)
+                            </label>
+                            <input
+                                type="number"
+                                id="loanTerm"
+                                value={loanTerm}
+                                onChange={(e) => setLoanTerm(e.target.value)}
+                                placeholder="e.g., 30"
+                                className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-600 focus:border-blue-600 transition duration-200"
+                                required
+                                min="1"
+                            />
+                        </div>
+                        <div className="flex justify-center space-x-4 mt-6">
+                            <button
+                                type="submit"
+                                className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-xl transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-green-300"
+                            >
+                                Calculate
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleReset}
+                                className="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-8 rounded-xl transition duration-300 ease-in-out transform hover:-translate-y-1 hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-red-300"
+                            >
+                                Reset
+                            </button>
+                        </div>
+                    </form>
+
+                    {monthlyPayment !== null && (
+                        <div className="mt-8 p-6 bg-blue-50 border border-blue-200 rounded-xl shadow-inner">
+                            <h2 className="text-2xl font-semibold text-blue-800 mb-4">Your Estimated Monthly Payment:</h2>
+                            <p className="text-4xl font-bold text-blue-700 mb-2">
+                                ₹{monthlyPayment}
+                            </p>
+                            {message && (
+                                <p className="mt-4 text-md font-medium text-gray-600">{message}</p>
+                            )}
+                            {amortizationSchedule.length > 0 && (
+                                <div className="amortization-table-container">
+                                    <h3 className="text-xl font-semibold text-gray-800 my-4">Amortization Schedule</h3>
+                                    <table className="amortization-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Payment No.</th>
+                                                <th>Monthly Payment</th>
+                                                <th>Principal Paid</th>
+                                                <th>Interest Paid</th>
+                                                <th>Remaining Balance</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {amortizationSchedule.map((payment, index) => (
+                                                <tr key={index}>
+                                                    <td>{payment.paymentNo}</td>
+                                                    <td>₹{payment.monthlyPayment}</td>
+                                                    <td>₹{payment.principalPaid}</td>
+                                                    <td>₹{payment.interestPaid}</td>
+                                                    <td>₹{payment.remainingBalance}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                    {message && monthlyPayment === null && (
+                        <p className="mt-6 text-red-600 font-medium">{message}</p>
+                    )}
+                    <p className="text-gray-600 text-sm mt-8">
+                        Disclaimer: This is a simplified calculator for estimation purposes only. Actual rates and payments may vary.
+                    </p>
+                </div>
+            );
+        };
+
+        // Home Loan Balance Transfer Calculator Component
+        const HomeLoanBalanceTransferCalculator = () => {
+            const [currentOutstandingBalance, setCurrentOutstandingBalance] = React.useState('');
+            const [currentInterestRate, setCurrentInterestRate] = React.useState('');
+            const [remainingCurrentLoanTerm, setRemainingCurrentLoanTerm] = React.useState('');
+            const [newInterestRate, setNewInterestRate] = React.useState('');
+            const [newLoanTerm, setNewLoanTerm] = React.useState('');
+            const [currentMonthlyPayment, setCurrentMonthlyPayment] = React.useState(null);
+            const [newMonthlyPayment, setNewMonthlyPayment] = React.useState(null);
+            const [emiSavings, setEmiSavings] = React.useState(null);
+            const [totalInterestSavings, setTotalInterestSavings] = React.useState(null);
+            const [amortizationSchedule, setAmortizationSchedule] = React.useState([]);
+            const [message, setMessage] = React.useState('');
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                setMessage('');
+                setCurrentMonthlyPayment(null);
+                setNewMonthlyPayment(null);
+                setEmiSavings(null);
+                setTotalInterestSavings(null);
+                setAmortizationSchedule([]);
+
+                const outstandingBalance = parseFloat(currentOutstandingBalance);
+                const currentRate = parseFloat(currentInterestRate);
+                const currentTermYears = parseFloat(remainingCurrentLoanTerm);
+                const newRate = parseFloat(newInterestRate);
+                const newTermYears = parseFloat(newLoanTerm);
+
+                // Input validation
+                if (isNaN(outstandingBalance) || isNaN(currentRate) || isNaN(currentTermYears) ||
+                    isNaN(newRate) || isNaN(newTermYears) ||
+                    outstandingBalance <= 0 || currentRate < 0 || currentTermYears <= 0 ||
+                    newRate < 0 || newTermYears <= 0) {
+                    setMessage('Please enter valid positive numbers for all fields.');
+                    return;
+                }
+
+                // Calculate current loan's monthly payment
+                const calculatedCurrentMonthlyPayment = calculateMonthlyPayment(outstandingBalance, currentRate, currentTermYears);
+                setCurrentMonthlyPayment(calculatedCurrentMonthlyPayment.toFixed(2));
+
+                // Calculate new loan's monthly payment
+                const calculatedNewMonthlyPayment = calculateMonthlyPayment(outstandingBalance, newRate, newTermYears);
+                setNewMonthlyPayment(calculatedNewMonthlyPayment.toFixed(2));
+
+                // Calculate total interest for current and new loans for comparison
+                const totalPaymentsCurrent = calculatedCurrentMonthlyPayment * (currentTermYears * 12);
+                const totalInterestCurrent = totalPaymentsCurrent - outstandingBalance;
+
+                const totalPaymentsNew = calculatedNewMonthlyPayment * (newTermYears * 12);
+                const totalInterestNew = totalPaymentsNew - outstandingBalance;
+
+                // Calculate savings
+                setEmiSavings((calculatedCurrentMonthlyPayment - calculatedNewMonthlyPayment).toFixed(2));
+                setTotalInterestSavings((totalInterestCurrent - totalInterestNew).toFixed(2));
+
+                // Generate amortization schedule for the new loan
+                const schedule = generateAmortizationSchedule(outstandingBalance, newRate, newTermYears, calculatedNewMonthlyPayment);
+                setAmortizationSchedule(schedule);
+
+                setMessage('Your balance transfer comparison and new loan amortization schedule are calculated.');
+            };
+
+            const handleReset = () => {
+                setCurrentOutstandingBalance('');
+                setCurrentInterestRate('');
+                setRemainingCurrentLoanTerm('');
+                setNewInterestRate('');
+                setNewLoanTerm('');
+                setCurrentMonthlyPayment(null);
+                setNewMonthlyPayment(null);
+                setEmiSavings(null);
+                setTotalInterestSavings(null);
+                setAmortizationSchedule([]);
+                setMessage('');
+            };
+
+            return (
+                <div className="w-full">
+                    <h1 className="text-4xl font-extrabold text-gray-800 mb-6 font-inter">
+                        Home Loan Balance Transfer Calculator
+                    </h1>
+                    <p className="text-gray-600 text-lg mb-8">
+                        Compare your current loan with a new balance transfer to see potential savings.
+                    </p>
+
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        <div className="p-6 bg-gray-50 border border-gray-200 rounded-xl shadow-sm">
+                            <h2 className="text-2xl font-semibold text-gray-700 mb-4 text-left">Current Loan Details</h2>
+                            <div>
+                                <label htmlFor="currentOutstandingBalance" className="block text-left text-gray-700 text-sm font-medium mb-2">
+                                    Current Outstanding Loan Amount (₹)
+                                </label>
+                                <input
+                                    type="number"
+                                    id="currentOutstandingBalance"
+                                    value={currentOutstandingBalance}
+                                    onChange={(e) => setCurrentOutstandingBalance(e.target.value)}
+                                    placeholder="e.g., 2500000"
+                                    className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-600 focus:border-blue-600 transition duration-200"
+                                    required
+                                    min="0"
+                                />
+                            </div>
+                            <div className="mt-4">
+                                <label htmlFor="currentInterestRate" className="block text-left text-gray-700 text-sm font-medium mb-2">
+                                    Current Annual Interest Rate (%)
+                                </label>
+                                <input
+                                    type="number"
+                                    id="currentInterestRate"
+                                    value={currentInterestRate}
+                                    onChange={(e) => setCurrentInterestRate(e.target.value)}
+                                    placeholder="e.g., 8.5"
+                                    step="0.01"
+                                    className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-600 focus:border-blue-600 transition duration-200"
+                                    required
+                                    min="0"
+                                />
+                            </div>
+                            <div className="mt-4">
+                                <label htmlFor="remainingCurrentLoanTerm" className="block text-left text-gray-700 text-sm font-medium mb-2">
+                                    Remaining Loan Term (Years)
+                                </label>
+                                <input
+                                    type="number"
+                                    id="remainingCurrentLoanTerm"
+                                    value={remainingCurrentLoanTerm}
+                                    onChange={(e) => setRemainingCurrentLoanTerm(e.target.value)}
+                                    placeholder="e.g., 20"
+                                    className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-600 focus:border-blue-600 transition duration-200"
+                                    required
+                                    min="1"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="p-6 bg-blue-50 border border-blue-200 rounded-xl shadow-sm">
+                            <h2 className="text-2xl font-semibold text-blue-700 mb-4 text-left">New Loan Details (Balance Transfer)</h2>
+                            <div>
+                                <label htmlFor="newInterestRate" className="block text-left text-gray-700 text-sm font-medium mb-2">
+                                    New Annual Interest Rate (%)
+                                </label>
+                                <input
+                                    type="number"
+                                    id="newInterestRate"
+                                    value={newInterestRate}
+                                    onChange={(e) => setNewInterestRate(e.target.value)}
+                                    placeholder="e.g., 7.35"
+                                    step="0.01"
+                                    className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-600 focus:border-blue-600 transition duration-200"
+                                    required
+                                    min="0"
+                                />
+                            </div>
+                            <div className="mt-4">
+                                <label htmlFor="newLoanTerm" className="block text-left text-gray-700 text-sm font-medium mb-2">
+                                    New Loan Term (Years)
+                                </label>
+                                <input
+                                    type="number"
+                                    id="newLoanTerm"
+                                    value={newLoanTerm}
+                                    onChange={(e) => setNewLoanTerm(e.target.value)}
+                                    placeholder="e.g., 15"
+                                    className="w-full p-3 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-600 focus:border-blue-600 transition duration-200"
+                                    required
+                                    min="1"
+                                />
+                            </div>
+                        </div>
+
+                        <div className="flex justify-center space-x-4 mt-6">
+                            <button
+                                type="submit"
+                                className="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-xl transition duration-300 ease-in-out transform hover:-translate-y-1 hover:-shadow-lg focus:outline-none focus:ring-4 focus:ring-red-300"
+                            >
+                                Calculate Savings
+                            </button>
+                            <button
+                                type="button"
+                                onClick={handleReset}
+                                className="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-8 rounded-xl transition duration-300 ease-in-out transform hover:-translate-y-1 hover:-shadow-lg focus:outline-none focus:ring-4 focus:ring-red-300"
+                            >
+                                Reset
+                            </button>
+                        </div>
+                    </form>
+
+                    {newMonthlyPayment !== null && (
+                        <div className="mt-8 p-6 bg-blue-50 border border-blue-200 rounded-xl shadow-inner">
+                            <h2 className="text-2xl font-semibold text-blue-800 mb-4">Balance Transfer Results:</h2>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left mb-6">
+                                <div>
+                                    <p className="text-lg text-gray-700">Current Monthly Payment:</p>
+                                    <p className="text-3xl font-bold text-gray-800">₹{currentMonthlyPayment}</p>
+                                </div>
+                                <div>
+                                    <p className="text-lg text-blue-700">New Monthly Payment:</p>
+                                    <p className="text-3xl font-bold text-blue-700">₹{newMonthlyPayment}</p>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-left mb-6">
+                                <div>
+                                    <p className="text-lg text-green-700">Monthly EMI Savings:</p>
+                                    <p className="text-3xl font-bold text-green-700">₹{emiSavings}</p>
+                                </div>
+                                <div>
+                                    <p className="text-lg text-green-700">Total Interest Savings (over new term):</p>
+                                    <p className="text-3xl font-bold text-green-700">₹{totalInterestSavings}</p>
+                                </div>
+                            </div>
+
+                            {message && (
+                                <p className="mt-4 text-md font-medium text-gray-600">{message}</p>
+                            )}
+                            {amortizationSchedule.length > 0 && (
+                                <div className="amortization-table-container">
+                                    <h3 className="text-xl font-semibold text-gray-800 my-4">New Loan Amortization Schedule</h3>
+                                    <table className="amortization-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Payment No.</th>
+                                                <th>Monthly Payment</th>
+                                                <th>Principal Paid</th>
+                                                <th>Interest Paid</th>
+                                                <th>Remaining Balance</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {amortizationSchedule.map((payment, index) => (
+                                                <tr key={index}>
+                                                    <td>{payment.paymentNo}</td>
+                                                    <td>₹{payment.monthlyPayment}</td>
+                                                    <td>₹{payment.interestPaid}</td>
+                                                    <td>₹{payment.principalPaid}</td>
+                                                    <td>₹{payment.remainingBalance}</td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                    {message && newMonthlyPayment === null && (
+                        <p className="mt-6 text-red-600 font-medium">{message}</p>
+                    )}
+                    <p className="text-gray-600 text-sm mt-8">
+                        Disclaimer: This calculator provides estimates for balance transfer savings. Actual savings may vary based on fees, charges, and specific bank policies.
+                    </p>
+                </div>
+            );
+        };
+
+        // Main App Component to switch between calculators
+        const App = () => {
+            const [activeCalculator, setActiveCalculator] = React.useState('emi'); // 'emi' or 'balanceTransfer'
+
+            return (
+                <div className="w-full">
+                    <div className="flex justify-center mb-8 space-x-4">
+                        <button
+                            onClick={() => setActiveCalculator('emi')}
+                            className={`py-3 px-6 rounded-xl font-bold transition-all duration-300 ${
+                                activeCalculator === 'emi'
+                                    ? 'bg-blue-600 text-white shadow-lg'
+                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                            }`}
+                        >
+                            EMI Calculator
+                        </button>
+                        <button
+                            onClick={() => setActiveCalculator('balanceTransfer')}
+                            className={`py-3 px-6 rounded-xl font-bold transition-all duration-300 ${
+                                activeCalculator === 'balanceTransfer'
+                                    ? 'bg-blue-600 text-white shadow-lg'
+                                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                            }`}
+                        >
+                            Balance Transfer Calculator
+                        </button>
+                    </div>
+
+                    {activeCalculator === 'emi' ? (
+                        <HomeLoanEMICalculator />
+                    ) : (
+                        <HomeLoanBalanceTransferCalculator />
+                    )}
+                </div>
+            );
+        };
+
+        // Render the Main App component into the 'react-app-root' div
+        const container = document.getElementById('react-app-root');
+        const root = ReactDOM.createRoot(container);
+        root.render(<App />);
+
+        // Partner Banks Slideshow JavaScript for dynamic logo display
+        window.onload = function() {
+            const bankSlideshowContainer = document.getElementById('bankSlideshow');
+            const banks = [
+                { name: "SBI", logoUrl: "https://i0.wp.com/wordzz.com/wp-content/uploads/2016/10/sbi.jpg" },
+                { name: "HDFC", logoUrl: "https://www.hdfcbank.com/content/api/contentstream-id/723fb80a-2dde-42a3-9793-7ae1be57c87f/190b873d-1269-4b1d-9823-2cfd7f0ee9b3?/Common/Images/2025/HDFC%20Bank%20logos/HDFC_Bank_logo_Regular.jpg" },
+                { name: "BOB", logoUrl: "https://www.mypunepulse.com/wp-content/uploads/2024/10/Bank-of-Baroda-768x443.jpg" },
+                { name: "BAJAJ", logoUrl: "https://globalprimenews.com/wp-content/uploads/2020/07/IMG_20200716_231355.jpg" },
+                { name: "ICICI", logoUrl: "https://kingstonmortgagesolutions.com/wp-content/uploads/2016/12/icici-bank.png" },
+                { name: "AXIS", logoUrl: "https://logodix.com/logo/2210415.png" },
+                { name: "GODREJ", logoUrl: "https://www.mediainfoline.com/wp-content/uploads/2021/07/Godrej-Housing-Finance_Twitter-768x542.jpg" }
+            ];
+            let currentBankIndex = 0;
+            let activeSlideElement = null;
+
+            function updateBankSlideshow() {
+                const nextBank = banks[currentBankIndex];
+                const newSlideElement = document.createElement('div');
+                newSlideElement.className = 'bank-slideshow-item';
+
+                const imgElement = document.createElement('img');
+                imgElement.src = nextBank.logoUrl;
+                imgElement.alt = nextBank.name + " Logo";
+                imgElement.className = 'bank-slideshow-logo';
+                imgElement.onerror = function() {
+                    // Fallback to text if image fails to load
+                    const fallbackText = document.createElement('span');
+                    fallbackText.textContent = nextBank.name;
+                    fallbackText.className = 'bank-slideshow-fallback-text';
+                    newSlideElement.innerHTML = ''; // Clear existing content (broken image)
+                    newSlideElement.appendChild(fallbackText);
+                    console.error('Failed to load logo for:', nextBank.name, 'from', this.src);
+                };
+                newSlideElement.appendChild(imgElement);
+                bankSlideshowContainer.appendChild(newSlideElement);
+
+                // Handle previous active slide: remove 'active' and add 'leaving' class
+                if (activeSlideElement) {
+                    activeSlideElement.classList.remove('active');
+                    activeSlideElement.classList.add('leaving');
+                    // Remove the element from DOM after transition ends
+                    activeSlideElement.addEventListener('transitionend', function handler() {
+                        if (this.parentNode) {
+                            this.parentNode.removeChild(this);
+                        }
+                        this.removeEventListener('transitionend', handler); // Clean up event listener
+                    });
+                }
+
+                // Force reflow to ensure transition starts from the correct initial state
+                void newSlideElement.offsetWidth;
+                newSlideElement.classList.add('active'); // Add 'active' class to new slide
+                activeSlideElement = newSlideElement; // Update active slide reference
+                currentBankIndex = (currentBankIndex + 1) % banks.length; // Move to next bank
+            }
+
+            // Initial call to display the first bank logo
+            updateBankSlideshow();
+            // Set interval for continuous slideshow
+            setInterval(updateBankSlideshow, 2500);
+        };
+    </script>
+</body>
+</html>
